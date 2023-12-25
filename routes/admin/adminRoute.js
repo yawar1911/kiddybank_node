@@ -5,8 +5,8 @@ const auth = require('../../middleware/auth');
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 const validator = require('../../validator/validation');
-
-
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' }); // Adjust the destination folder as needed
 
 router.post('/createAdmin', multipartMiddleware, userController.createAdmin);
 router.post('/adminLogin', multipartMiddleware, validator.validate('login'), userController.adminLogin);
@@ -28,7 +28,7 @@ router.get('/getUserDetails/:_id/', multipartMiddleware, userController.getUserD
 // router.post('/editImage/:_id', multipartMiddleware, contentController.editImage);
 // router.post('/editGame/:_id', multipartMiddleware, gameController.editGame);
 // router.get('/listImage', multipartMiddleware, contentController.listImage);
-router.post('/addImage', multipartMiddleware, contentController.addImage);
+router.post('/addImage',upload.single('images'),contentController.addImage);
 // router.post('/deleteImage', multipartMiddleware, validator.validate('deleteFaq'), contentController.deleteImage);
 // router.post('/listImage/:limit/:pageNumber', multipartMiddleware, contentController.imagePagination);
 // router.get('/listImage/:_id', multipartMiddleware, contentController.getImageById);

@@ -43,33 +43,19 @@ module.exports = {
     },
     //---------------addImage---------//
     addImage: async (req, res) => {
-        console.log('function is call now .....')
+        console.log('function is call now .....', req)
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return response.sendErrorMessage(res, errors.array().slice(0, 1).map(function (errs) { return errs.msg; }).toString(), "false");
         }
         try {
             let criteria = {};
-            criteria = req.body;
-            console.log(req.files)
-            if (req.files.images) {
-                console.log(req.files)
-                let imageArr = [];
-                if (req.files.images.length > 0) {
-                    for (var i = 0; i < req.files.images.length; i++) {
-                        let uploadedImage = await imageUpload(req.files.images[i])
-                        imageArr.push(uploadedImage.secure_url)
-                        criteria.images = imageArr
-                    }
-                } else {
-                    let imageArr = [];
-                    let uploadedImage = await imageUpload(req.files.images)
-                    imageArr.push(uploadedImage.secure_url)
-                    criteria.images = imageArr
-                }
+            criteria = req;
+            if (req.file) {
+                let uploadedImage = await imageUpload(req.file)
+                criteria = uploadedImage.secure_url
             }
             console.log(criteria)
-           
             response.sendsuccessData(res, 'Create successful Image ', criteria)
         } catch (error) {
             console.log('--------------------   contentAdd ---------------- ', error);
@@ -271,8 +257,6 @@ async function imageUpload(imageFile) {
     console.log('fuction is call now ..... image upload')
     return new Promise((resolve, reject) => {
         cloudinary.v2.uploader.upload(imageFile.path, (error, result) => {
-            console.log(error);
-            console.log(result)
             if (error) {
                 console.log(error)
                 reject(error);

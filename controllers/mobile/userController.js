@@ -11,9 +11,9 @@ const mongoose = require("mongoose");
 var ObjectId = require('mongodb').ObjectId;
 
 cloudinary.config({
-    cloud_name: "altsols-com",
-    api_key: "432157412791339",
-    api_secret: "iLBqwz_JwopOvIRkoNulrLajSxY"
+    cloud_name: "dwvnagtp4",
+    api_key: "913296893489775",
+    api_secret: "fR35nm9gdB6UTYape3kTTN3UeyQ"
 });
 
 module.exports = {
