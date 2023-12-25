@@ -28,7 +28,7 @@ router.get('/getUserDetails/:_id/', multipartMiddleware, userController.getUserD
 // router.post('/editImage/:_id', multipartMiddleware, contentController.editImage);
 // router.post('/editGame/:_id', multipartMiddleware, gameController.editGame);
 // router.get('/listImage', multipartMiddleware, contentController.listImage);
-// router.post('/addImage', multipartMiddleware, contentController.addImage);
+router.post('/addImage', multipartMiddleware, contentController.addImage);
 // router.post('/deleteImage', multipartMiddleware, validator.validate('deleteFaq'), contentController.deleteImage);
 // router.post('/listImage/:limit/:pageNumber', multipartMiddleware, contentController.imagePagination);
 // router.get('/listImage/:_id', multipartMiddleware, contentController.getImageById);

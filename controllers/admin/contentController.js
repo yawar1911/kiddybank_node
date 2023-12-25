@@ -6,9 +6,9 @@ const cloudinary = require('cloudinary');
 const notificationFunc = require('../../utils/notification');
 var isodate = require("isodate");
 cloudinary.config({
-    cloud_name: "altsols-com",
-    api_key: "432157412791339",
-    api_secret: "iLBqwz_JwopOvIRkoNulrLajSxY"
+    cloud_name: "dwvnagtp4",
+    api_key: "913296893489775",
+    api_secret: "fR35nm9gdB6UTYape3kTTN3UeyQ"
 });
 
 const update = require('../../query/update');
@@ -43,6 +43,7 @@ module.exports = {
     },
     //---------------addImage---------//
     addImage: async (req, res) => {
+        console.log('function is call now .....')
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
             return response.sendErrorMessage(res, errors.array().slice(0, 1).map(function (errs) { return errs.msg; }).toString(), "false");
@@ -50,7 +51,9 @@ module.exports = {
         try {
             let criteria = {};
             criteria = req.body;
+            console.log(req.files)
             if (req.files.images) {
+                console.log(req.files)
                 let imageArr = [];
                 if (req.files.images.length > 0) {
                     for (var i = 0; i < req.files.images.length; i++) {
@@ -66,15 +69,8 @@ module.exports = {
                 }
             }
             console.log(criteria)
-            let result = await create.create("imageModel", criteria);
-            if (criteria.images.length > 0) {
-                for (let i = 0; i <= criteria.images.length - 1; i++) {
-                    let senderUserDetail = {}
-                    senderUserDetail.Image = criteria.images[i];
-                    await create.create("imageCount", senderUserDetail);
-                }
-            }
-            response.sendsuccessData(res, 'Create successful Image ', result)
+           
+            response.sendsuccessData(res, 'Create successful Image ', criteria)
         } catch (error) {
             console.log('--------------------   contentAdd ---------------- ', error);
             response.sendErrorCustomMessage(res, "Internal Server Error", "false");
@@ -272,8 +268,11 @@ module.exports = {
     }
 }
 async function imageUpload(imageFile) {
+    console.log('fuction is call now ..... image upload')
     return new Promise((resolve, reject) => {
         cloudinary.v2.uploader.upload(imageFile.path, (error, result) => {
+            console.log(error);
+            console.log(result)
             if (error) {
                 console.log(error)
                 reject(error);
