@@ -1,7 +1,6 @@
 const find = require('../../query/find');
 const create = require('../../query/create');
 const update = require('../../query/update');
-const Point = require('../../models/chatModel')
 const response = require('../../utils/response');
 const bcrypt = require('../../utils/bcrypt');
 const jwt = require('jsonwebtoken');
@@ -11,13 +10,7 @@ var func = require('../../utils/function');
 const cloudinary = require('cloudinary');
 const notificationFunc = require('../../utils/notification');
 const { ObjectId } = require('mongodb');
-const Notifications = require('../../models/notificationModel')
-const Room = require('../../models/roomModel');
-const Image = require('../../models/imageCount');
-const gameOver = require('../../models/gameOverModel');
-const ChatModel = require('../../models/chatModel');
 const mongoose = require("mongoose");
-// const Product = require('../../models/productModel');
 
 module.exports = {
     addProduct: async (req, res) => {

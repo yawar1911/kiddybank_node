@@ -7,10 +7,6 @@ const config = require('./../../config/config');
 const { validationResult } = require('express-validator/check');
 var func = require('../../utils/function');
 const cloudinary = require('cloudinary');
-const Room = require('../../models/roomModel');
-const Image = require('../../models/imageCount');
-const gameOver = require('../../models/gameOverModel');
-const ChatModel = require('../../models/chatModel');
 const mongoose = require("mongoose");
 var ObjectId = require('mongodb').ObjectId;
 

@@ -3,7 +3,6 @@ const create = require('../../query/create');
 const response = require('../../utils/response');
 const { validationResult } = require('express-validator/check');
 const cloudinary = require('cloudinary');
-const ConverseModel = require('../../models/converseModel')
 
 cloudinary.config({
     cloud_name: "altsols-com",
@@ -610,50 +609,7 @@ module.exports = {
             response.sendErrorCustomMessage(res, "Internal Server Error", "false");
         }
     },
-    //---------------listConversePagination---------//
-    listConversePagination: async (req, res) => {
-        try {
-            var size = 10
-            let results = await ConverseModel.aggregate([
-                {
-                    $lookup: {
-                        from: "explanations",
-                        localField: "explanation_id",
-                        foreignField: "_id",
-                        as: "forecasterData"
-                    }
-                },
-                {
-                    $unwind: {
-                        path: "$forecasterData",
-                        preserveNullAndEmptyArrays: true
-                    }
-                },
-                {
-                    $project: {
-                        _id: 1,
-                        explanation: 1,
-                        converse: 1,
-                        'forecasterData.explanation': 1,
-                    }
-                },
-                { $sort: { createdAt: -1 }, },
-                { "$skip": (size * (req.params.pageNumber - 1)) },
-                { $limit: parseInt(req.params.limit) || 10 }
-            ])
-            let options = {
-                page: parseInt(req.params.pageNumber) || 1,
-                limit: parseInt(req.params.limit) || 10,
-                sort: { createdAt: -1 },
-            }
-            let notifications = await ConverseModel.aggregatePaginate(results, options)
-            var test = { docs: results, page: options.page, limit: options.limit, total: notifications.totalCount, pages: notifications.pageCount }
-            response.sendsuccessData(res, 'converse list', test)
-        } catch (error) {
-            console.log('--------------------   contentList ---------------- ', error);
-            response.sendErrorCustomMessage(res, "Internal Server Error", "false");
-        }
-    },
+   
     //---------------editConverse---------//
     editConverse: async (req, res) => {
         const errors = validationResult(req);
