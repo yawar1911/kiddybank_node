@@ -18,6 +18,7 @@ router.get('/ForgotPassword', userController.adminForgotPassword)
 // router.post('/login', multipartMiddleware, userController.Login)
 // // router.post('/createGame', multipartMiddleware, userController.createGame)
 router.post('/changePassword', userController.changePassword);
+router.post('/totalCount', multipartMiddleware, userController.totalCount);
 
 
 // // router.use(auth.adminAuth);
