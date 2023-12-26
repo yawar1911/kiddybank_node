@@ -53,6 +53,14 @@ authCheck = async (req, res, next) => {
                         _id: data._id
                     }
                     let admin = await find.findOnePromise("adminModel", criteria, {}, {});
+                    if (!admin) {
+                        return response.sendErrorCustomMessage(res, 'Unauthorized user', '401');
+                    }
+    
+                    // Check if the user has the 'admin' role
+                    if (admin.role !== 'Admin') {
+                        return response.sendErrorCustomMessage(res, 'Access denied. User is not an admin.', '403');
+                    }
                     req.admin = admin;
                     next();
                 }

@@ -8,7 +8,7 @@ const { validationResult } = require('express-validator/check');
 var func = require('../../utils/function');
 const cloudinary = require('cloudinary');
 
-
+const isAdmin = {role: 'admin'}
 cloudinary.config({
     cloud_name: "dwvnagtp4",
     api_key: "913296893489775",
@@ -20,7 +20,8 @@ module.exports = {
         try {
             let dataToSave = req.body;
             let criteria = {
-                Type: 'Admin'
+                email: dataToSave.email,
+                // Type: 'Admin'
             }
             let result = await find.findOnePromise("adminModel", criteria, {}, {});
             if (result) {
@@ -28,6 +29,7 @@ module.exports = {
             } else {
                 let password = await bcrypt.bcryptGenerate(req.body.password)
                 dataToSave.password = password
+                dataToSave.Type = "Admin"
                 let result = await create.create("adminModel", dataToSave);
                 return response.sendsuccessData(res, "Admin created sucessfully", result);
             }
@@ -149,9 +151,15 @@ module.exports = {
         try {
             let criteria = {}
             criteria.email = req.body.email
+            // criteria.role = "Admin"
             let admin = await find.findOnePromise("adminModel", criteria, {}, {})
             if (!admin) {
                 return response.sendErrorMessage(res, "Admin not Found")
+            }
+            criteria.role = "Admin"
+            let role = await find.findOnePromise("adminModel", criteria, {}, {})
+            if (!role) {
+                return response.sendErrorMessage(res, "Only admin can Login")
             }
             let comparePassword = await bcrypt.bcryptCompare(req.body.password, admin.password);
             if (!comparePassword) {

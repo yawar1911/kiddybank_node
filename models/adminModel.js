@@ -24,5 +24,9 @@ let collection = new Schema({
         type: String,
         default: 'https://res.cloudinary.com/dlopkjzfr/image/upload/v1580813623/qtjpwprowb6mouuqmyjp.png'
     },
+    // role:{
+    //     type:String,
+    //     default:"Admin"
+    // }
 })
 module.exports = mongoose.model("admins", collection)
