@@ -251,7 +251,29 @@ module.exports = {
             console.log('--------------------   totalUser ---------------- ', error);
             response.sendErrorCustomMessage(res, ("Internal Server Error"), "false");
         }
+    },
+    
+
+editAdminImage : async (req, res) => {
+    const { adminId } = req.params;
+
+    try {
+        let criteria = { _id: adminId };
+        let dataToUpdate = {};
+
+        if (req.file) {
+            let uploadedImage = await imageUpload(req.file);
+            dataToUpdate.profilePic = uploadedImage.secure_url;
+        }
+
+        let result = await find.findAndUpdatePromise("adminModel", criteria, dataToUpdate, { new: true });
+
+        response.sendsuccessData(res, 'Admin image updated successfully', result);
+    } catch (error) {
+        console.log('--------------------   editAdminImage ---------------- ', error);
+        response.sendErrorCustomMessage(res, "Internal Server Error", "false");
     }
+},
 }
 async function imageUpload(imageFile) {
     console.log('fuction is call now ..... image upload')
@@ -266,3 +288,7 @@ async function imageUpload(imageFile) {
         })
     })
 }
+
+
+
+

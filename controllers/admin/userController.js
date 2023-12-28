@@ -29,7 +29,7 @@ module.exports = {
             } else {
                 let password = await bcrypt.bcryptGenerate(req.body.password)
                 dataToSave.password = password
-                dataToSave.Type = "Admin"
+                // dataToSave.Type = "Admin"
                 let result = await create.create("adminModel", dataToSave);
                 return response.sendsuccessData(res, "Admin created sucessfully", result);
             }
@@ -167,7 +167,7 @@ module.exports = {
             }
             let jwtToken = await jwt.sign({ password: req.body.password, _id: admin._id }, config.jwtSecretKey)
             let dataToUpdate = {}
-            dataToUpdate.jwtToken = jwtToken;
+            dataToUpdate.token = jwtToken;
             let result1 = await find.findAndUpdatePromise("adminModel", criteria, dataToUpdate, {});
             let result = await find.findOnePromise("adminModel", criteria, {}, {})
             response.sendsuccessData(res, "Login succesfully", result)

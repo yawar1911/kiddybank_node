@@ -16,7 +16,7 @@ let collection = new Schema({
         enum: ['Active', 'Inactive'],
         default: 'Active'
     },
-    jwtToken: {
+    token: {
         type: String,
         default: ''
     },
@@ -24,9 +24,9 @@ let collection = new Schema({
         type: String,
         default: 'https://res.cloudinary.com/dlopkjzfr/image/upload/v1580813623/qtjpwprowb6mouuqmyjp.png'
     },
-    // role:{
-    //     type:String,
-    //     default:"Admin"
-    // }
+    role:{
+        type:String,
+        default:"Admin"
+    }
 })
 module.exports = mongoose.model("admins", collection)

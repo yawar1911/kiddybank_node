@@ -17,7 +17,7 @@ const productSchema = new mongoose.Schema({
         required: true
     },
     percentage: {
-        type: String,
+        type: Number,
         required: false
     },
     image:{
