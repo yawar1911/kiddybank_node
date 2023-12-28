@@ -12,7 +12,9 @@ router.post('/createAdmin', multipartMiddleware, userController.createAdmin);
 router.post('/adminLogin', multipartMiddleware, validator.validate('login'), userController.adminLogin);
 router.get('/adminDetails', multipartMiddleware, auth.adminAuth, userController.adminDetails);
 // // //user api
-router.post('/listUser/:limit/:pageNumber', multipartMiddleware, userController.listUser)
+// router.post('/listUser/:limit/:pageNumber', multipartMiddleware, userController.listUser)
+
+router.post('/listUser', multipartMiddleware, userController.listUser)
 router.get('/ForgotPassword', userController.adminForgotPassword)
 // // router.post('/socialLogin', multipartMiddleware, userController.socialLogin)
 // router.post('/login', multipartMiddleware, userController.Login)

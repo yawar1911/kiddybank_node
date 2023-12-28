@@ -52,11 +52,11 @@ module.exports = {
     },
     listUser: async (req, res) => {
         try {
-            var options = {
-                page: parseInt(req.params.pageNumber) || 1,
-                limit: parseInt(req.params.limit) || 10,
-                sort: { createdAt: -1 },
-            }
+            // var options = {
+            //     page: parseInt(req.params.pageNumber) || 1,
+            //     limit: parseInt(req.params.limit) || 10,
+            //     sort: { createdAt: -1 },
+            // }
             var query = {}
             if (req.body.search) {
                 query.$and = [{
@@ -66,7 +66,9 @@ module.exports = {
                     ]
                 }]
             }
-            let result = await find.pagination("userModel", query, options);
+            // let result = await find.pagination("userModel", query, options);
+            let result = await find.pagination("userModel", query);
+
             response.sendsuccessData(res, "User data succesfully", result)
         } catch (error) {
             console.log('--------------------   listUser ---------------- ', error);
