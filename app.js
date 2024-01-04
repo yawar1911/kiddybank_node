@@ -11,20 +11,43 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json());
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-app.use(cors());
+
+const allowedOrigins = [
+    "http://localhost:3001",
+    "http://localhost:3000",
+    "http://localhost:4100",
+    "http://localhost:4000",
+  ];
+
+
+app.use(cors({
+    origin: (origin, callback) => {
+      console.log(origin);
+      // allow requests with no origin ( like mobile apps or curl requests )
+      if (!origin) {
+        return callback(null, true);
+      }
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = `CORS policy don't allow access from the specified Origin. (${origin})`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+  }));
 
 app.use('/mobile', mobileRoute);
 app.use('/admin', adminRoute);
 app.use('/plan', planRoute);
 
+let uri=`mongodb+srv://its99786:cQRR8tM83cIpvTP3@cluster0.ltotvo7.mongodb.net/likewise?retryWrites=true&w=majority`;
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/Likewise', {
+mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false
 }, (err) => {
     if (err) {
+        console.log(err)
         console.log('Error in connecting with db')
     } else {
         console.log('Successfully connected db')
