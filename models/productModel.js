@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const productSchema = new mongoose.Schema({
+const mongoosePaginate = require('mongoose-paginate');
+var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
+const productSchema =  mongoose.Schema({
     productName: {
         type: String,
         required: true
@@ -34,7 +36,9 @@ const productSchema = new mongoose.Schema({
         required:true,
         enum:["shortTermPlan","longTermPlan"] // short term and long term plan 
     }
+}, {
+    timestamps: true
 });
-const Product = mongoose.model('product', productSchema);
-
-module.exports = Product;
+productSchema.plugin(mongoosePaginate)
+productSchema.plugin(mongooseAggregatePaginate);
+module.exports = mongoose.model('product', productSchema);

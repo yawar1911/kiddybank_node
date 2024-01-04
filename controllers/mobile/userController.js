@@ -495,16 +495,36 @@ module.exports = {
     //------------------------updateUserProfile---------// 
     updateUserProfile: async (req, res) => {
         try {
-            let dataToUpdate = req.body
-            let criteria = {
-                _id: req.user._id
+            const userId = req.body._id;
+
+            if (!mongoose.Types.ObjectId.isValid(userId)) {
+                return response.sendErrorCustomMessage(res, 'Invalid user ID', 'false');
             }
-            if (req.files.profilePic) {
-                let uploadedImage = await imageUpload(req.files.profilePic);
-                dataToUpdate.profilePic = uploadedImage.secure_url
+    const updateId = {_id:mongoose.Types.ObjectId(userId)};
+            let criteria = {};
+    
+           
+            if (req.body.name) {
+                criteria.name = req.body.name;
             }
-            let result = await find.findByIdAndUpdatePromise("userModel", criteria, dataToUpdate, { new: true }, {})
-            response.sendsuccessData(res, ("User profile updated"), result)
+    
+            if (req.body.email) {
+                criteria.email = req.body.email;
+            }
+    
+            if (req.body.mobile) {
+                criteria.mobile = req.body.mobile;
+            }
+            if (req.body.amount) {
+                criteria.amount = req.body.amount;
+            }
+            if (req.body) {
+                criteria.profilePic = req.body.profilePic;
+    
+
+            }
+            let result = await find.findByIdAndUpdatePromise("userModel", updateId, criteria, { new: true }, {});
+            response.sendsuccessData(res, 'User profile updated', result);
         } catch (error) {
             console.log('--------------------   updateProfile ---------------- ', error);
             response.sendErrorCustomMessage(res, ("Internal Server Error"), "false");

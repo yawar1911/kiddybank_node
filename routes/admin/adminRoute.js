@@ -23,6 +23,8 @@ router.post('/changePassword', userController.changePassword);
 router.post('/totalCount', multipartMiddleware, userController.totalCount);
 
 
+router.post('/productList/:limit/:pageNumber', multipartMiddleware, userController.productList)
+
 // // router.use(auth.adminAuth);
 
 router.get('/getUserDetails/:_id/', multipartMiddleware, userController.getUserDetails)

@@ -75,6 +75,32 @@ module.exports = {
             response.sendErrorCustomMessage(res, "Internal Server Error", "false");
         }
     },
+
+    productList: async (req, res) => {
+        try {
+            var options = {
+                page: parseInt(req.params.pageNumber) || 1,
+                limit: parseInt(req.params.limit) || 10,
+                sort: { createdAt: -1 },
+            }
+            var query = {}
+            if (req.body.search) {
+                query.$and = [{
+                    $or: [
+                        { "productName": { $regex: "^" + req.body.search, $options: 'i' } },
+                        { "planType": { $regex: "^" + req.body.search, $options: 'i' } },
+                    ]
+                }]
+            }
+            let result = await find.pagination("productModel", query, options);
+            // let result = await find.pagination("productModel", query);
+
+            response.sendsuccessData(res, "User data succesfully", result)
+        } catch (error) {
+            console.log('--------------------   product list ---------------- ', error);
+            response.sendErrorCustomMessage(res, "Internal Server Error", "false");
+        }
+    },
     updateUserProfileStatus: async (req, res) => {
         try {
 

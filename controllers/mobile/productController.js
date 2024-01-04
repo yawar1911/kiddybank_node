@@ -23,7 +23,7 @@ module.exports = {
             senderUserDetails.percentage = req.body.percentage;
             senderUserDetails.montly = req.body.montly;
             senderUserDetails.planType = req.body.planType;
-            senderUserDetails.images = "";
+            senderUserDetails.image = req.body.image;
             let saveDetails = await create.create("productModel", senderUserDetails);
             response.sendsuccessData(res, 'User details retrieved successfully', saveDetails);
         }

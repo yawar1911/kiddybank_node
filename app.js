@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const app = express();
 const mongoose = require('mongoose');
 const mobileRoute = require('./routes/mobile/mobileRoute');
+const planRoute = require('./routes/mobile/planRoute');
 const adminRoute = require('./routes/admin/adminRoute');
 const cors = require('cors');
 
@@ -13,7 +14,9 @@ var io = require('socket.io')(server);
 app.use(cors());
 
 app.use('/mobile', mobileRoute);
-app.use('/admin', adminRoute);;
+app.use('/admin', adminRoute);
+app.use('/plan', planRoute);
+
 
 
 mongoose.connect('mongodb://127.0.0.1:27017/Likewise', {

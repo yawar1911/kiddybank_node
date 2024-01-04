@@ -82,7 +82,7 @@ router.get('/cards', cardController.getAllCard);
 // router.use(auth.authCheck);
 
 // router.get('/listExplanation', multipartMiddleware, mobileContentController.listExplanation);
-// router.post('/updateUserProfile', multipartMiddleware, userController.updateUserProfile);
+router.post('/updateUserProfile', multipartMiddleware, userController.updateUserProfile);
 // router.post('/deleteUserAcount', multipartMiddleware, userController.deleteUserAcount);
 router.get('/getUserDetails', multipartMiddleware, userController.getUserDetails);
 
