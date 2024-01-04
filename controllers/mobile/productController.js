@@ -17,6 +17,7 @@ module.exports = {
         try {
             let senderUserDetails = {};
             senderUserDetails.productName = req.body.productName;
+            senderUserDetails.description = req.body.description;
             senderUserDetails.price = req.body.price;
             senderUserDetails.dailyIncome = req.body.dailyIncome;
             senderUserDetails.totalIncome = req.body.totalIncome;
@@ -66,15 +67,7 @@ module.exports = {
      getAllProducts : async (req, res) => {
         try {
             const allProducts = await find.findAllPromise('productModel', {}, {}, {});
-            const formattedResponse = allProducts.map(product => ({
-                productId: product._id,
-                productName: product.productName,
-                price: product.price,
-                dailyIncome:product.dailyIncome,
-                totalIncome:product.totalIncome
-            }));
-    
-            response.sendsuccessData(res, 'All products retrieved successfully', formattedResponse);
+            response.sendsuccessData(res, 'All products retrieved successfully', allProducts);
         } catch (error) {
             console.log(error);
             response.sendErrorCustomMessage(res, 'Internal Server Error', 'false');

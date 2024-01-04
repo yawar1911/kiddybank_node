@@ -31,10 +31,16 @@ const productSchema =  mongoose.Schema({
         type: String,
         required: true
     },
+    description:{
+        type: String,
+        required: true 
+    },
     planType:{
         type:String,
         required:true,
-        enum:["shortTermPlan","longTermPlan"] // short term and long term plan 
+        enum:["Short term","Long term","Mid",
+        "Double money","Women saving","New baby born"
+        ] // short term and long term plan 
     }
 }, {
     timestamps: true

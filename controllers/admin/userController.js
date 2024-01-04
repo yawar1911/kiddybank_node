@@ -92,8 +92,8 @@ module.exports = {
                     ]
                 }]
             }
+            console.log(query,options)
             let result = await find.pagination("productModel", query, options);
-            // let result = await find.pagination("productModel", query);
 
             response.sendsuccessData(res, "User data succesfully", result)
         } catch (error) {
