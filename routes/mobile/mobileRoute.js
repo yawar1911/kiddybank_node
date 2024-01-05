@@ -27,10 +27,10 @@ router.post('/guestLogin', multipartMiddleware, userController.guestLogin);
 router.post('/checkSocalId', multipartMiddleware, userController.checkSocalId);
 router.get('/getUserDemo', multipartMiddleware, userController.getUserDemo);
 
-router.post('/product/add', multipartMiddleware, productController.addProduct );
-router.put('/product/update/:productId', multipartMiddleware, productController.updateProduct);
-router.delete('/product/:productId', productController.deleteProduct);
-router.get('/products', productController.getAllProducts);
+// router.post('/product/add', multipartMiddleware, productController.addProduct );
+// router.put('/product/update/:productId', multipartMiddleware, productController.updateProduct);
+// router.delete('/product/:productId', productController.deleteProduct);
+// router.get('/products', productController.getAllProducts);
 
 router.post('/card/add', multipartMiddleware, cardController.addCard);
 router.put('/card/update/:cardId', multipartMiddleware, cardController.updateCard);

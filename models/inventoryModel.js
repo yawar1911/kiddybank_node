@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require('mongoose-paginate');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
-const productSchema =  mongoose.Schema({
+const inventorySchema =  mongoose.Schema({
+    productId:{
+        type: mongoose.Schema.Types.ObjectId,
+           ref: 'product',
+           required: true,
+    },
     productName: {
         type: String,
         required: true
@@ -50,6 +55,6 @@ const productSchema =  mongoose.Schema({
 }, {
     timestamps: true
 });
-productSchema.plugin(mongoosePaginate)
-productSchema.plugin(mongooseAggregatePaginate);
-module.exports = mongoose.model('product', productSchema);
+inventorySchema.plugin(mongoosePaginate)
+inventorySchema.plugin(mongooseAggregatePaginate);
+module.exports = mongoose.model('inventory', inventorySchema);

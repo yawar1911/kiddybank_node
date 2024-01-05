@@ -7,6 +7,7 @@ const multipartMiddleware = multipart();
 const validator = require('../../validator/validation');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Adjust the destination folder as needed
+const productController  = require('../../controllers/mobile/productController');
 
 router.post('/createAdmin', multipartMiddleware, userController.createAdmin);
 router.post('/adminLogin', multipartMiddleware, validator.validate('login'), userController.adminLogin);
@@ -48,4 +49,10 @@ router.post('/updateUserProfileStatus', multipartMiddleware, userController.upda
 // router.get('/helpAndSuportValue/:type', multipartMiddleware, contentController.helpAndSuportValue);
 // router.post('/helpAndSuportUpdate', multipartMiddleware, contentController.helpAndSuportUpdate);
 
+router.post('/product/add', multipartMiddleware, productController.addProduct );
+router.put('/product/update/:productId', multipartMiddleware, productController.updateProduct);
+router.delete('/product/:productId', productController.deleteProduct);
+router.get('/product/:productId', multipartMiddleware, productController.getProductById);
+
+// router.get('/products', productController.getAllProducts);
 module.exports = router;

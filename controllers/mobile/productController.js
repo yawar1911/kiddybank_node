@@ -15,35 +15,43 @@ const mongoose = require("mongoose");
 module.exports = {
     addProduct: async (req, res) => {
         try {
-            let senderUserDetails = {};
-            senderUserDetails.productName = req.body.productName;
-            senderUserDetails.description = req.body.description;
-            senderUserDetails.price = req.body.price;
-            senderUserDetails.dailyIncome = req.body.dailyIncome;
-            senderUserDetails.totalIncome = req.body.totalIncome;
-            senderUserDetails.percentage = req.body.percentage;
-            senderUserDetails.montly = req.body.montly;
-            senderUserDetails.planType = req.body.planType;
-            senderUserDetails.image = req.body.image;
-            let saveDetails = await create.create("productModel", senderUserDetails);
-            response.sendsuccessData(res, 'User details retrieved successfully', saveDetails);
-        }
-        catch (error) {
-            response.sendErrorCustomMessage(error, 'Internal Server Error', 'false');
+            const productDetails = {
+                productName: req.body.productName,
+                description: req.body.description,
+                price: req.body.price,
+                dailyIncome: req.body.dailyIncome,
+                totalIncome: req.body.totalIncome,
+                percentage: req.body.percentage,
+                monthly: req.body.monthly,
+                planType: req.body.planType,
+                image: req.body.image,
+            };
+
+            const savedProduct = await create.create("productModel", productDetails);
+
+            response.sendsuccessData(res, 'Product added successfully', savedProduct);
+        } catch (error) {
+            console.error('Error adding product:', error);
+            response.sendErrorCustomMessage(res, 'Failed to add product', error.message);
         }
     },
-     updateProduct : async (req, res) => {
+    updateProduct: async (req, res) => {
         try {
             const productIdToUpdate = req.params.productId;
+
             if (!productIdToUpdate) {
                 return response.sendErrorMessage(res, 'productId is required for updating', 'false');
             }
+
             const { _id, ...fieldsToUpdate } = req.body;
-            const criteria = { _id: mongoose.Types.ObjectId(productIdToUpdate) };
+            const criteria = { _id: productIdToUpdate };
+
             const updateDetails = await update.updateMany("productModel", criteria, fieldsToUpdate);
+
             response.sendsuccessData(res, 'Product updated successfully', updateDetails);
         } catch (error) {
-            response.sendErrorCustomMessage(error, 'Internal Server Error', 'false');
+            console.error('Error updating product:', error);
+            response.sendErrorCustomMessage(res, 'Failed to update product', error.message);
         }
     },
     deleteProduct :async (req, res) => {
@@ -60,17 +68,37 @@ module.exports = {
             }
             response.sendsuccessData(res, 'Product deleted successfully', deleteResult);
         } catch (error) {
-            console.log(error);
-            response.sendErrorCustomMessage(error, 'Internal Server Error', 'false');
+            console.error('Error deleting product:', error);
+            response.sendErrorCustomMessage(res, 'Failed to delete product', error.message);
         }
     },
-     getAllProducts : async (req, res) => {
+    //  getAllProducts : async (req, res) => {
+    //     try {
+    //         const allProducts = await find.findAllPromise('productModel', {}, {}, {});
+    //         response.sendsuccessData(res, 'All products retrieved successfully', allProducts);
+    //     } catch (error) {
+    //         console.log(error);
+    //         response.sendErrorCustomMessage(res, 'Internal Server Error', 'false');
+    //     }
+    // },
+    getProductById: async (req, res) => {
         try {
-            const allProducts = await find.findAllPromise('productModel', {}, {}, {});
-            response.sendsuccessData(res, 'All products retrieved successfully', allProducts);
+            const productId = req.params.productId;
+
+            if (!mongoose.Types.ObjectId.isValid(productId)) {
+                return response.sendErrorMessage(res, 'Invalid productId format', 'false');
+            }
+
+            const productDetails = await find.findByIdPromise('productModel', productId);
+
+            if (!productDetails) {
+                return response.sendErrorMessage(res, 'Product not found', 'false');
+            }
+
+            response.sendsuccessData(res, 'Product details retrieved successfully', productDetails);
         } catch (error) {
-            console.log(error);
-            response.sendErrorCustomMessage(res, 'Internal Server Error', 'false');
+            console.error('Error retrieving product details by ID:', error);
+            response.sendErrorCustomMessage(res, 'Failed to retrieve product details', error.message);
         }
     },
 }

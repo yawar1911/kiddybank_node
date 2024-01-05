@@ -39,8 +39,8 @@ app.use('/mobile', mobileRoute);
 app.use('/admin', adminRoute);
 app.use('/plan', planRoute);
 
-let uri=`mongodb+srv://its99786:cQRR8tM83cIpvTP3@cluster0.ltotvo7.mongodb.net/likewise?retryWrites=true&w=majority`;
-
+// let uri=`mongodb+srv://its99786:cQRR8tM83cIpvTP3@cluster0.ltotvo7.mongodb.net/likewise?retryWrites=true&w=majority`;
+let uri="mongodb://localhost:27017/Likewise"
 mongoose.connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

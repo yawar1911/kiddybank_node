@@ -172,6 +172,19 @@ const findSortBy = (collectionName, criteria, option, limit) => {
         })
     })
 }
+const findByIdPromise = (collectionName, id, project, options) => {
+    return new Promise((resolve, reject) => {
+        const collection = require('../models/' + collectionName);
+        collection.findById(id, project, options).exec((err, info) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(info);
+            }
+        });
+    });
+}
+
 
 module.exports = {
     findAllPromise,
@@ -190,7 +203,8 @@ module.exports = {
     pagination,
     findLastInsertId,
     findAllAndCountPromise,
-    findSortBy
+    findSortBy,
+    findByIdPromise
 }
 
 
