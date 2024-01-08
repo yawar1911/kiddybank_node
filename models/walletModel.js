@@ -1,10 +1,22 @@
+
 const mongoose = require("mongoose");
 const mongoosePaginate = require('mongoose-paginate');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 const productSchema =  mongoose.Schema({
-    productName: {
-        type: String,
-        required: true
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+    },
+    productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'product',
+        required: true,
+    },
+    inventoryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Inventory',
+        required: true,
     },
     price: {
         type: Number,
@@ -22,30 +34,9 @@ const productSchema =  mongoose.Schema({
         type: Number,
         required: false
     },
-    image:{
-        type: String,
-        required: false 
-    },
-    description:{
-        type: String,
-        required: true 
-    },
-    totalDays:{
-        type: Number,
-         required:true
-    },
-    planType:{
-        type:String,
-        required:true,
-        enum:["Short term","Long term","Mid term",
-        "Double money","Women saving","New baby born"
-        ] // short term and long term plan 
-    }
-    // planType: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'category',
-    //     required: true,
-    //   },
+  
+   
+   
 }, {
     timestamps: true
 });

@@ -8,6 +8,8 @@ const validator = require('../../validator/validation');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Adjust the destination folder as needed
 const productController  = require('../../controllers/mobile/productController');
+const inventoryController  = require('../../controllers/mobile/inventoryController');
+
 
 router.post('/createAdmin', multipartMiddleware, userController.createAdmin);
 router.post('/adminLogin', multipartMiddleware, validator.validate('login'), userController.adminLogin);
@@ -55,4 +57,11 @@ router.delete('/product/:productId', productController.deleteProduct);
 router.get('/product/:productId', multipartMiddleware, productController.getProductById);
 
 // router.get('/products', productController.getAllProducts);
+
+router.post('/inventory/add', multipartMiddleware, inventoryController.addInventory );
+router.get('/user/:userId/inventory', multipartMiddleware, inventoryController.getUserInventoryDetails );
+router.put('/inventory/:inventoryId', multipartMiddleware,inventoryController.updateInventory);
+router.delete('/inventory/:inventoryId', multipartMiddleware,inventoryController.deleteInventory);
+
+
 module.exports = router;
