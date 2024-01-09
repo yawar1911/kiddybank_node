@@ -7,11 +7,7 @@ var category = mongoose.Schema({
         type: String,
         required: true
     },
-    subCategoryId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'subCategory',
-        required: false,
-    },
+   
    
 },
     {

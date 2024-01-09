@@ -27,7 +27,6 @@ const updateInventory = async (req, res) => {
   const updateFields = req.body;
 
   try {
-    // Find the inventory item by ID and update it
     const updatedInventory = await Inventory.findByIdAndUpdate(
       inventoryId,
       { $set: updateFields },

@@ -9,6 +9,9 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads/' }); // Adjust the destination folder as needed
 const productController  = require('../../controllers/mobile/productController');
 const inventoryController  = require('../../controllers/mobile/inventoryController');
+const categoryController  = require('../../controllers/mobile/categoryController');
+const subcategoryController = require('../../controllers/mobile/subcategoryController');
+
 
 
 router.post('/createAdmin', multipartMiddleware, userController.createAdmin);
@@ -63,5 +66,17 @@ router.get('/user/:userId/inventory', multipartMiddleware, inventoryController.g
 router.put('/inventory/:inventoryId', multipartMiddleware,inventoryController.updateInventory);
 router.delete('/inventory/:inventoryId', multipartMiddleware,inventoryController.deleteInventory);
 
+
+router.post('/category/add', multipartMiddleware, categoryController.addCategory);
+router.get('/category/:categoryId', multipartMiddleware, categoryController.getCategoryDetails );
+router.put('/category/:categoryId', multipartMiddleware,categoryController.updateCategory);
+router.delete('/category/:categoryId', multipartMiddleware,categoryController.deleteCategory);
+
+
+router.post('/subcategory/add', multipartMiddleware, subcategoryController.addSubcategory);
+router.get('/subcategory/:subcategoryId', multipartMiddleware, subcategoryController.getSubCategoryById );
+router.get('/allSubcategory', multipartMiddleware, subcategoryController.getAllSubCategories );
+router.put('/subcategory/:subcategoryId', multipartMiddleware,subcategoryController.updateSubCategory);
+router.delete('/subcategory/:subcategoryId', multipartMiddleware,subcategoryController.deleteSubCategory);
 
 module.exports = router;

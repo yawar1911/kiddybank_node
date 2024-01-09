@@ -24,6 +24,7 @@ module.exports = {
                 percentage: req.body.percentage,
                 totalDays: req.body.monthly *30,
                 planType: req.body.planType,
+                risk: req.body.risk,
                 image: req.body.image,
             };
 

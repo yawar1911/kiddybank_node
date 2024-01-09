@@ -2,8 +2,12 @@ var mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 var subCategory = mongoose.Schema({
-
-    subCategoryName: {
+    categoryId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'category',
+        required: false,
+    },
+    subcategoryName: {
         type: String,
         required: true
     },

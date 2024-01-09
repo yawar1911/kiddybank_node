@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require('mongoose-paginate');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
-const productSchema =  mongoose.Schema({
+const walletSchema =  mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -34,12 +34,23 @@ const productSchema =  mongoose.Schema({
         type: Number,
         required: false
     },
+    balance: {
+        type: Number,
+        default: 0,
+        required: true,
+    },
+    transactions: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Transaction',
+        },
+    ], 
   
    
    
 }, {
     timestamps: true
 });
-productSchema.plugin(mongoosePaginate)
-productSchema.plugin(mongooseAggregatePaginate);
-module.exports = mongoose.model('product', productSchema);
+walletSchema.plugin(mongoosePaginate)
+walletSchema.plugin(mongooseAggregatePaginate);
+module.exports = mongoose.model('wallet', walletSchema);

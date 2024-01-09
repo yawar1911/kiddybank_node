@@ -39,8 +39,13 @@ const productSchema =  mongoose.Schema({
         required:true,
         enum:["Short term","Long term","Mid term",
         "Double money","Women saving","New baby born"
-        ] // short term and long term plan 
-    }
+        ] 
+    },
+    risk:{
+        type:String,
+        required:true,
+        enum:["Low risk","Medium risk", "High risk"] 
+    },
     // planType: {
     //     type: mongoose.Schema.Types.ObjectId,
     //     ref: 'category',
