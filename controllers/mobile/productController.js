@@ -22,7 +22,7 @@ module.exports = {
                 dailyIncome: req.body.dailyIncome,
                 totalIncome: req.body.totalIncome,
                 percentage: req.body.percentage,
-                totalDays: req.body.monthly *30,
+                totalDays: req.body.totalDays,
                 planType: req.body.planType,
                 risk: req.body.risk,
                 image: req.body.image,
