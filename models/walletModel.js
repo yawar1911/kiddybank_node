@@ -18,6 +18,10 @@ const walletSchema =  mongoose.Schema({
         ref: 'Inventory',
         required: true,
     },
+    productName: {
+        type: String,
+        required: true
+    },
     price: {
         type: Number,
         required: true
@@ -34,17 +38,34 @@ const walletSchema =  mongoose.Schema({
         type: Number,
         required: false
     },
-    balance: {
+    monthly:{
         type: Number,
-        default: 0,
-        required: true,
+         required:true
     },
-    transactions: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Transaction',
-        },
-    ], 
+    totalDays:{
+        type: Number,
+         required:true
+    },
+    risk:{
+        type:String,
+        required:true,
+        enum:["Low risk","Medium risk", "High risk"] 
+    },
+    transactions: {
+        type: String,
+        required: true
+    },
+    // balance: {
+    //     type: Number,
+    //     default: 0,
+    //     required: true,
+    // },
+    // transactions: [
+    //     {
+    //         type: mongoose.Schema.Types.ObjectId,
+    //         ref: 'Transaction',
+    //     },
+    // ], 
   
    
    

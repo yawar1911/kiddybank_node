@@ -11,9 +11,17 @@ const cloudinary = require('cloudinary');
 const notificationFunc = require('../../utils/notification');
 const { ObjectId } = require('mongodb');
 const mongoose = require("mongoose");
+const Category = require('../../models/categoryModel');
 
 module.exports = {
     addProduct: async (req, res) => {
+//         Id=req.body._id
+//         const catId = { _id: mongoose.Types.ObjectId(Id) };
+//         const category = await Category.findById(catId );
+// console.log(category,"category")
+//         if (!category) {
+//             return response.sendErrorMessage(res, 'Category not found', 'false');
+//         }
         try {
             const productDetails = {
                 productName: req.body.productName,
@@ -23,11 +31,14 @@ module.exports = {
                 totalIncome: req.body.totalIncome,
                 percentage: req.body.percentage,
                 totalDays: req.body.monthly *30,
+                monthly: req.body.monthly,
+
                 planType: req.body.planType,
+                // planType: category._id, // Use the category ID
                 risk: req.body.risk,
                 image: req.body.image,
             };
-
+console.log(productDetails)
             const savedProduct = await create.create("productModel", productDetails);
 
             response.sendsuccessData(res, 'Product added successfully', savedProduct);

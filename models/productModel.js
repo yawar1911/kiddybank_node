@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongoosePaginate = require('mongoose-paginate');
+// const mongoosePaginate = require('mongoose-paginate-v2');
 var mongooseAggregatePaginate = require('mongoose-aggregate-paginate');
 const productSchema =  mongoose.Schema({
     productName: {
@@ -29,6 +30,10 @@ const productSchema =  mongoose.Schema({
     description:{
         type: String,
         required: true 
+    },
+    monthly:{
+        type: Number,
+         required:true
     },
     totalDays:{
         type: Number,
