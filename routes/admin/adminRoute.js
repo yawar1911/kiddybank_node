@@ -62,7 +62,8 @@ router.get('/product/:productId', multipartMiddleware, productController.getProd
 // router.get('/products', productController.getAllProducts);
 
 router.post('/inventory/add', multipartMiddleware, inventoryController.addInventory );
-router.get('/user/:userId/inventory', multipartMiddleware, inventoryController.getUserInventoryDetails );
+router.get('/inventory/:id', multipartMiddleware, inventoryController.getInventoryDetailById );
+router.get('/inventoryList', multipartMiddleware, inventoryController.getAllInventoryDetails );
 router.put('/inventory/:inventoryId', multipartMiddleware,inventoryController.updateInventory);
 router.delete('/inventory/:inventoryId', multipartMiddleware,inventoryController.deleteInventory);
 

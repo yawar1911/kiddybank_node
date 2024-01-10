@@ -19,32 +19,41 @@ cloudinary.config({
 module.exports = {
     //---------------signup-----------------//
     signup: async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            return response.sendErrorMessage(res, errors.array().slice(0, 1).map(function (errs) { return errs.msg; }).toString(), "false");
-        }
         try {
-            let criteria = {}
-            criteria.email = req.body.email;
-            let userExist = await find.findOnePromise("userModel", criteria, {}, {})
-            if (userExist) {
-                return response.sendErrorMessage(res, ("Email already exists"));
+            // Validate input using express-validator
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                return response.sendErrorMessage(res, errors.array()[0].msg, "false");
             }
-            let dataToSave = req.body;
-            let password = await bcrypt.bcryptGenerate(req.body.password);
-            dataToSave.password = password;
-            let result = await create.create("userModel", dataToSave);
-            let userCriteria = {
-                _id: result._id
+    
+            const emailExist = await find.findOnePromise("userModel", { email: req.body.email }, {}, {});
+            if (emailExist) {
+                return response.sendErrorMessage(res, "Email already exists");
             }
-
-            let dataToUpdate = {};
-            dataToUpdate.jwtToken = jwt.sign({ _id: result._id }, config.jwtSecretKey, { expiresIn: '90d' })
-            let result1 = await find.findAndUpdatePromise("userModel", userCriteria, dataToUpdate, {})
-            let result3 = await find.findOnePromise("userModel", userCriteria, {}, {})
-            response.sendsuccessData(res, ("User signed up sucessfully"), result3);
+    
+            // Hash the password using bcrypt
+            const hashedPassword = await bcrypt.bcryptGenerate(req.body.password);
+    
+            // Save user data
+            const userData = {
+                ...req.body,
+                password: hashedPassword
+            };
+            const result = await create.create("userModel", userData);
+    
+            // Update user data with JWT token
+            const userCriteria = { _id: result._id };
+            const jwtToken = jwt.sign({ _id: result._id }, config.jwtSecretKey, { expiresIn: '90d' });
+            const updateData = { jwtToken };
+            await find.findAndUpdatePromise("userModel", userCriteria, updateData, {});
+    
+            // Retrieve updated user data
+            const updatedUserData = await find.findOnePromise("userModel", userCriteria, {}, {});
+    
+            response.sendsuccessData(res, "User signed up successfully", updatedUserData);
         } catch (error) {
-            response.sendErrorCustomMessage(res, ("Internal Server Error"), "false");
+            console.error(error);
+            response.sendErrorCustomMessage(res, "Internal Server Error", "false");
         }
     },
      getUserDetails1 :async (req, res) => {

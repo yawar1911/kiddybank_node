@@ -13,11 +13,6 @@ const walletSchema =  mongoose.Schema({
         ref: 'product',
         required: true,
     },
-    inventoryId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Inventory',
-        required: true,
-    },
     productName: {
         type: String,
         required: true
