@@ -27,7 +27,8 @@ var User = mongoose.Schema({
     },
     profilePic: {
         type: String, // Store the path to the profile picture
-        required: true,
+        required: false,
+        default:""
     }
 },
     {

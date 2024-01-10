@@ -20,7 +20,6 @@ module.exports = {
     //---------------signup-----------------//
     signup: async (req, res) => {
         try {
-            // Validate input using express-validator
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return response.sendErrorMessage(res, errors.array()[0].msg, "false");
@@ -31,23 +30,24 @@ module.exports = {
                 return response.sendErrorMessage(res, "Email already exists");
             }
     
-            // Hash the password using bcrypt
             const hashedPassword = await bcrypt.bcryptGenerate(req.body.password);
     
-            // Save user data
             const userData = {
-                ...req.body,
-                password: hashedPassword
+                name:req.body.name,
+                email: req.body.email,
+                password: hashedPassword,
+                mobile:req.body.mobile,
+
+                
             };
+    
             const result = await create.create("userModel", userData);
     
-            // Update user data with JWT token
             const userCriteria = { _id: result._id };
-            const jwtToken = jwt.sign({ _id: result._id }, config.jwtSecretKey, { expiresIn: '90d' });
-            const updateData = { jwtToken };
-            await find.findAndUpdatePromise("userModel", userCriteria, updateData, {});
+            const jwtToken = jwt.sign({ _id: result._id }, config.jwtSecretKey, { expiresIn: '5d' });
+            
+            await find.findAndUpdatePromise("userModel", userCriteria, { jwtToken }, {});
     
-            // Retrieve updated user data
             const updatedUserData = await find.findOnePromise("userModel", userCriteria, {}, {});
     
             response.sendsuccessData(res, "User signed up successfully", updatedUserData);
