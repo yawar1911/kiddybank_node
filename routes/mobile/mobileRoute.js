@@ -8,6 +8,7 @@ const mobileContentController = require('../../controllers/mobile/mobileContentC
 const contentController = require('../../controllers/admin/contentController');
 const productController  = require('../../controllers/mobile/productController');
 const cardController  = require('../../controllers/mobile/cardController');
+const inventoryController = require('../../controllers/mobile/inventoryController');
 
 
 
@@ -37,8 +38,11 @@ router.put('/card/update/:cardId', multipartMiddleware, cardController.updateCar
 router.delete('/card/:cardId', cardController.deleteCard);
 router.get('/cards', cardController.getAllCard);
 
+router.use(auth.authCheck);
 
+router.post('/productList/:limit/:pageNumber', multipartMiddleware, productController.productList)
 
+router.get('/inventoryUser', multipartMiddleware, inventoryController.getUserInventoryDetails );
 
 
 
@@ -79,7 +83,6 @@ router.get('/cards', cardController.getAllCard);
 
 
 // //-----------------------Check auth--------------------.//
-// router.use(auth.authCheck);
 
 // router.get('/listExplanation', multipartMiddleware, mobileContentController.listExplanation);
 router.post('/updateUserProfile', multipartMiddleware, userController.updateUserProfile);

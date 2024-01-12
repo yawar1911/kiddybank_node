@@ -55,7 +55,7 @@ const walletSchema =  mongoose.Schema({
     //     default: 0,
     //     required: true,
     // },
-    // transactions: [
+    // transactions: [ 
     //     {
     //         type: mongoose.Schema.Types.ObjectId,
     //         ref: 'Transaction',

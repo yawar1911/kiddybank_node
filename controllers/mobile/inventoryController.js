@@ -96,31 +96,32 @@ const inventoryDetail = inventoryDetails.length > 0 ? inventoryDetails[0] : null
       res.status(500).json({ success: false, message: 'Error retrieving inventory details' });
     }
   };
-// const getUserInventoryDetails = async (req, res) => {
-//   const userId = req.params.userId;
-//   console.log(userId)
+const getUserInventoryDetails = async (req, res) => {
+  console.log(req.user._id)
+  const userId = req.user._id;
+  console.log(userId)
 
-//   try {
-//     const uniqueProductIds = await Inventory.distinct('productId', { userId });
-// console.log(uniqueProductIds)
-//     const inventoryDetails = await Promise.all(
-//       uniqueProductIds.map(async (productId) => {
-//         return Inventory.findOne({ userId, productId })
-//           .populate({
-//             path: 'productId',
-//             model: 'product',
-//             select: 'productName price description dailyIncome totalIncome percentage image montly planType',
-//           })
-//           .exec();
-//       })
-//     );
-// console.log(inventoryDetails)
-//     res.json({ success: true, data: inventoryDetails });
-//   } catch (error) {
-//     console.error('Error retrieving inventory details:', error);
-//     res.status(500).json({ success: false, message: 'Error retrieving inventory details' });
-//   }
-// };
+  try {
+    const uniqueProductIds = await Inventory.distinct('productId', { userId });
+console.log(uniqueProductIds)
+    const inventoryDetails = await Promise.all(
+      uniqueProductIds.map(async (productId) => {
+        return Inventory.findOne({ userId, productId })
+          .populate({
+            path: 'productId',
+            model: 'product',
+            select: 'productName price description dailyIncome totalIncome percentage image montly totalDays planType',
+          })
+          .exec();
+      })
+    );
+console.log(inventoryDetails)
+    res.json({ success: true, data: inventoryDetails }); 
+  } catch (error) {
+    console.error('Error retrieving inventory details:', error);
+    res.status(500).json({ success: false, message: 'Error retrieving inventory details' });
+  }
+};
   const deleteInventory = async (req, res) => {
     const { inventoryId } = req.params;
   
@@ -195,36 +196,163 @@ const inventoryDetail = inventoryDetails.length > 0 ? inventoryDetails[0] : null
   //   }
   // };
   
+  // const getAllInventoryDetails = async (req, res) => {
+  //   try {
+  //     const pageNumber = parseInt(req.params.pageNumber) || 1;
+  //     const limit = parseInt(req.params.limit) || 10;
+  //     const skip = (pageNumber - 1) * limit;
+  
+  //     const searchQuery = req.body.search ? {
+  //       'userDetails.name': {
+  //         $regex: req.body.search,
+  //         $options: 'i',
+  //       },
+  //     } : {};
+  
+  //     // Fetch data
+  //     const dataQuery = Inventory.aggregate([
+  //       {
+  //         $lookup: {
+  //           from: 'users',
+  //           localField: 'userId',
+  //           foreignField: '_id',
+  //           as: 'userDetails',
+  //         },
+  //       },
+  //       {
+  //         $lookup: {
+  //           from: 'products',
+  //           localField: 'productId',
+  //           foreignField: '_id',
+  //           as: 'productDetails',
+  //         },
+  //       },
+  //       {
+  //         $match: searchQuery,
+  //       },
+  //       { $skip: skip },
+  //       { $limit: limit },
+  //       {
+  //         $project: {
+  //           _id: 1,
+  //           bookingDate: 1,
+  //           paymentStatus: 1,
+  //           userDetails: { $arrayElemAt: ['$userDetails', 0] },
+  //           productDetails: { $arrayElemAt: ['$productDetails', 0] },
+  //         },
+  //       },
+  //     ]);
+  
+  //     // Fetch total count
+  //     const countQuery = Inventory.aggregate([
+  //       {
+  //         $lookup: {
+  //           from: 'users',
+  //           localField: 'userId',
+  //           foreignField: '_id',
+  //           as: 'userDetails',
+  //         },
+  //       },
+  //       {
+  //         $lookup: {
+  //           from: 'products',
+  //           localField: 'productId',
+  //           foreignField: '_id',
+  //           as: 'productDetails',
+  //         },
+  //       },
+  //       {
+  //         $match: searchQuery,
+  //       },
+  //       { $count: 'totalDocs' },
+  //     ]);
+  
+  //     const [data, countResult] = await Promise.all([dataQuery, countQuery]);
+  
+  //     const totalDocs = countResult.length > 0 ? countResult[0].totalDocs : 0;
+  
+  //     response.sendsuccessData(res, 'Inventory data successfully paginated', {
+  //       data,
+  //       totalDocs,
+  //       pageNumber,
+  //       limit,
+  //     });
+  //   } catch (error) {
+  //     console.error('Error fetching inventory list:', error);
+  //     response.sendErrorCustomMessage(res, 'Internal Server Error', 'false');
+  //   }
+  // };
+  
   const getAllInventoryDetails = async (req, res) => {
     try {
-      var options = {
-          page: parseInt(req.params.pageNumber) || 1,
-          limit: parseInt(req.params.limit) || 10,
-          sort: { createdAt: -1 },
-      }
-      var query = {}
-      if (req.body.search) {
-          query.$and = [{
-              $or: [
-                  { "name": { $regex: "^" + req.body.search, $options: 'i' } },
-                  // { "planType": { $regex: "^" + req.body.search, $options: 'i' } },
-              ]
-          }]
-      }
-      // console.log(query,options)
-      let result = await Inventory.pagination( query, options);
+      const pageNumber = parseInt(req.params.pageNumber) || 1;
+      const limit = parseInt(req.params.limit) || 10;
+      const searchQuery = req.body.search || ''; // Assuming search parameter is in req.body.search
+  
+      const pipeline = [
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'userDetails',
+          },
+        },
+        {
+          $lookup: {
+            from: 'products',
+            localField: 'productId',
+            foreignField: '_id',
+            as: 'productDetails',
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            bookingDate: 1,
+            paymentStatus: 1,
+            userDetails: { $arrayElemAt: ['$userDetails', 0] },
+            productDetails: { $arrayElemAt: ['$productDetails', 0] },
+          },
+        },
+        {
+          $match: {
+            'userDetails.name': { $regex: searchQuery, $options: 'i' },
+          },
+        },
+        
+      ];
+  
+      const countPipeline = [...pipeline, { $count: 'totalCount' }];
+    
+    const [totalCountObj] = await Inventory.aggregate(countPipeline);
+    const totalCount = totalCountObj ? totalCountObj.totalCount : 0;
 
-      response.sendsuccessData(res, "User data succesfully", result)
-  } catch (error) {
-      console.log('--------------------   product list ---------------- ', error);
-      response.sendErrorCustomMessage(res, "Internal Server Error", "false");
-  }
+    const totalPages = Math.ceil(totalCount / limit);
+
+    const resultPipeline = [
+      ...pipeline,
+      { $skip: (pageNumber - 1) * limit },
+      { $limit: limit },
+    ];
+
+    const inventoryList = await Inventory.aggregate(resultPipeline);
+
+  
+      res.json({ success: true, data: inventoryList, limit:limit, page: pageNumber,pages: totalPages,totalDocs: totalCount });
+    } catch (error) {
+      console.error('Error fetching inventory list:', error);
+      res.status(500).json({ success: false, message: 'Error fetching inventory list' });
+    }
   };
+  
+  
   
 module.exports = {
     addInventory,
     getInventoryDetailById,
     updateInventory,
     deleteInventory,
-    getAllInventoryDetails
+    getAllInventoryDetails,
+    getUserInventoryDetails
 };

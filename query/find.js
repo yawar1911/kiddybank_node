@@ -162,7 +162,35 @@ const pagination = (collectionName, criteria, option) => {
         })
     })
 }
+const aggregatePromise = (collectionName, pipeline) => {
+    return new Promise((resolve, reject) => {
+        const collName = require('../models/' + collectionName);
 
+        collName.aggregate(pipeline).exec((err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+};
+
+const aggregateData = async (collectionName, pipeline) => {
+    // const collection = db.collection(collectionName); // Replace 'db' with your MongoDB database connection
+  
+    return new Promise((resolve, reject) => {
+        const collName = require('../models/' + collectionName);
+
+        collName.aggregate(pipeline).toArray((err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    });
+  };
 const findSortBy = (collectionName, criteria, option, limit) => {
     return new Promise((resolve, reject) => {
         const collName = require('../models/' + collectionName);
@@ -204,7 +232,9 @@ module.exports = {
     findLastInsertId,
     findAllAndCountPromise,
     findSortBy,
-    findByIdPromise
+    findByIdPromise,
+    aggregatePromise,
+    aggregateData
 }
 
 

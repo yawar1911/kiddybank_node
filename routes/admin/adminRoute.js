@@ -63,7 +63,7 @@ router.get('/product/:productId', multipartMiddleware, productController.getProd
 
 router.post('/inventory/add', multipartMiddleware, inventoryController.addInventory );
 router.get('/inventory/:id', multipartMiddleware, inventoryController.getInventoryDetailById );
-router.get('/inventoryList', multipartMiddleware, inventoryController.getAllInventoryDetails );
+router.get('/inventoryList/:limit/:pageNumber', multipartMiddleware, inventoryController.getAllInventoryDetails );
 router.put('/inventory/:inventoryId', multipartMiddleware,inventoryController.updateInventory);
 router.delete('/inventory/:inventoryId', multipartMiddleware,inventoryController.deleteInventory);
 
