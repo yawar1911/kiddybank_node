@@ -15,7 +15,6 @@ const inventoryController = require('../../controllers/mobile/inventoryControlle
 
 router.post('/checkEmail', multipartMiddleware, validator.validate('checkemail'), userController.checkEmail);
 router.post('/signup', multipartMiddleware, validator.validate('signup'), userController.signup);
-router.get('/user/:_id', multipartMiddleware,  userController.getUserDetails1);
 router.get('/users', userController.getUserList);
 
 
@@ -41,9 +40,11 @@ router.get('/cards', cardController.getAllCard);
 router.use(auth.authCheck);
 
 router.post('/productList/:limit/:pageNumber', multipartMiddleware, productController.productList)
+router.get('/user', multipartMiddleware,  userController.getUserDetails1);
 
 router.get('/inventoryUser', multipartMiddleware, inventoryController.getUserInventoryDetails );
 
+router.post('/updateUserProfile', multipartMiddleware, userController.updateUserProfile);
 
 
 
@@ -85,7 +86,6 @@ router.get('/inventoryUser', multipartMiddleware, inventoryController.getUserInv
 // //-----------------------Check auth--------------------.//
 
 // router.get('/listExplanation', multipartMiddleware, mobileContentController.listExplanation);
-router.post('/updateUserProfile', multipartMiddleware, userController.updateUserProfile);
 // router.post('/deleteUserAcount', multipartMiddleware, userController.deleteUserAcount);
 router.get('/getUserDetails', multipartMiddleware, userController.getUserDetails);
 

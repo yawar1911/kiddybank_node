@@ -58,8 +58,8 @@ module.exports = {
     },
      getUserDetails1 :async (req, res) => {
         try {
-            console.log(req.params)
-            const userId = req.params._id; // Assuming userId is a parameter in the route
+            console.log(req.user.Id)
+            const userId = req.user._id; // Assuming userId is a parameter in the route
             
             // Validate if userId is a valid ObjectId (MongoDB ObjectId)
             if (!mongoose.Types.ObjectId.isValid(userId)) {
@@ -80,6 +80,7 @@ module.exports = {
                 email: userDetails.email,
                 mobile: userDetails.mobile,
                 amount: userDetails.amount,
+                profilePic: userDetails.profilePic,
                 createdAt: userDetails.createdAt,
                 updatedAt: userDetails.updatedAt
                 // Add other fields as needed
@@ -184,6 +185,7 @@ module.exports = {
             if (!errors.isEmpty()) {
                 return response.sendErrorMessage(res, errors.array().slice(0, 1).map(function (errs) { return errs.msg; }).toString(), "false");
             }
+            console.log(req.body.email)
             req.body.email = req.body.email
             let criteria = {}
             criteria.email = req.body.email;
@@ -504,12 +506,13 @@ module.exports = {
     //------------------------updateUserProfile---------// 
     updateUserProfile: async (req, res) => {
         try {
-            const userId = req.body._id;
+            // console.log(req.user._id)
+            const userId = req.user._id;
 
             if (!mongoose.Types.ObjectId.isValid(userId)) {
                 return response.sendErrorCustomMessage(res, 'Invalid user ID', 'false');
             }
-    const updateId = {_id:mongoose.Types.ObjectId(userId)};
+    // const updateId = {_id:mongoose.Types.ObjectId(userId)};
             let criteria = {};
     
            
@@ -524,15 +527,15 @@ module.exports = {
             if (req.body.mobile) {
                 criteria.mobile = req.body.mobile;
             }
-            if (req.body.amount) {
-                criteria.amount = req.body.amount;
-            }
-            if (req.body) {
+            // if (req.body.amount) {
+            //     criteria.amount = req.body.amount;
+            // }
+            if (req.body.profilePic) {
                 criteria.profilePic = req.body.profilePic;
     
 
             }
-            let result = await find.findByIdAndUpdatePromise("userModel", updateId, criteria, { new: true }, {});
+            let result = await find.findByIdAndUpdatePromise("userModel", userId, criteria, { new: true }, {});
             response.sendsuccessData(res, 'User profile updated', result);
         } catch (error) {
             console.log('--------------------   updateProfile ---------------- ', error);
