@@ -7,19 +7,19 @@ const productSchema =  mongoose.Schema({
         type: String,
         required: true
     },
-    price: {
+    price: {  // add customer price plan
         type: Number,
         required: true
     },
-    dailyIncome: {
+    dailyIncome: {  // daily income
         type: Number,
         required: true
     },
-    totalIncome: {
+    totalIncome: {   // total income benefit
         type: Number,
         required: true
     },
-    percentage: {
+    percentage: {   // perecntage acc. to risk  plan
         type: Number,
         required: false
     },
@@ -31,25 +31,25 @@ const productSchema =  mongoose.Schema({
         type: String,
         required: true 
     },
-    monthly:{
+    monthly:{    
         type: Number,
          required:true
     },
-    totalDays:{
+    totalDays:{   // total days plan
         type: Number,
          required:true
     },
-    planType:{
+    planType:{   // types of plan
         type:String,
         required:true,
         enum:["Short term","Long term","Mid term",
-        "Double money","Women saving","New baby born"
+        "Women saving","New baby born"
         ] 
     },
-    risk:{
+    risk:{   // risk add
         type:String,
         required:true,
-        enum:["Low risk","Medium risk", "High risk"] 
+        enum:["Low risk","Secure risk", "High risk","Full profit","Steady growth","Substantial return","High rewards","Maximum growth"] 
     },
     // planType: {
     //     type: mongoose.Schema.Types.ObjectId,

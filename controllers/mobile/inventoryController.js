@@ -6,25 +6,40 @@ const mongoose = require('mongoose')
 const find = require('../../query/find');
 
 
-  const addInventory = async (req, res) => {
-      try {
-          const inventoryDetails = {
-              userId: req.body.userId,
-              productId: req.body.productId,
-              bookingDate: req.body.bookingDate,
-              paymentStatus: req.body.paymentStatus,
 
-          };
+const addInventory = async (req, res) => {
+  try {
+    // Assuming Product is your mongoose model for products
+    const productDetails = await Product.findOne({ _id: mongoose.Types.ObjectId(req.body.productId) });
+console.log(productDetails)
+    if (!productDetails) {
+      return response.sendErrorCustomMessage(res, 'Product not found');
+    }
 
-          const newInventory = new Inventory(inventoryDetails);
-          const savedInventory = await newInventory.save();
-
-          response.sendsuccessData(res, 'Inventory added successfully', savedInventory);
-      } catch (error) {
-          console.error('Error adding inventory:', error);
-          response.sendErrorCustomMessage(res, 'Failed to add inventory', error.message);
+    const inventoryDetails = {
+      userId: req.body.userId,
+      productId: req.body.productId,
+      bookingDate: req.body.bookingDate,
+      paymentStatus: req.body.paymentStatus,
+      planBuy:{
+        amount: productDetails.price,
+      planType:productDetails.planType,
+      risk:productDetails.risk,
+      percentage:productDetails.percentage
       }
-  };
+      
+    };
+
+    const newInventory = new Inventory(inventoryDetails);
+    const savedInventory = await newInventory.save();
+
+    response.sendsuccessData(res, 'Inventory added successfully', savedInventory);
+  } catch (error) {
+    console.error('Error adding inventory:', error);
+    response.sendErrorCustomMessage(res, 'Failed to add inventory', error.message);
+  }
+};
+
 
 const updateInventory = async (req, res) => {
   const { inventoryId } = req.params;

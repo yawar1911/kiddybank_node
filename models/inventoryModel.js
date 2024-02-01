@@ -17,6 +17,25 @@ const inventorySchema = mongoose.Schema({
         type: Date,
         required: true
     },
+    planBuy:{
+        amount: {
+            type: Number,
+            required: true
+        },
+        percentage: {
+            type: Number,
+            required: true
+        },
+        planType: {
+            type: String,
+            required: true
+        },
+        risk: {
+            type: String,
+            required: true
+        },
+    },
+   
     paymentStatus: {
         type: String,
         required: true,
