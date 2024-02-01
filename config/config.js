@@ -5,7 +5,7 @@ const env = (process.env.APP_ENV === undefined) ? 'dev' : process.env.APP_ENV;
 
 module.exports = {
     APP_ENV: env || 'dev', 
-    PORT: process.env.PORT || 8000,
+    PORT: process.env.PORT || 8080,
     API_PREFIX: process.env.API_PREFIX || 'api',
     DB_DIALECT: process.env.DB_DIALECT || 'mongo',
     DB_HOST: process.env.DB_HOST || 'mongodb+srv://alessa_admin:ZelYzPW9IRueGlAP@cluster0.nnefb.mongodb.net/al_essa_crm_db?retryWrites=true&w=majority',
