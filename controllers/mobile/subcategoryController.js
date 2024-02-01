@@ -1,6 +1,6 @@
 const Category = require('../../models/categoryModel');
 const response = require('../../utils/response');
-const subcategory = require('../../models/subcategoryModel');
+const subcategory = require('../../models/subCategoryModel');
 
   const addSubcategory = async (req, res) => {
       try {
