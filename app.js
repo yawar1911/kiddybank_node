@@ -31,6 +31,7 @@ const allowedOrigins = [
     "http://localhost:3000",
     "http://localhost:4100",
     "http://localhost:4000",
+    "http://13.51.174.156:3000/"
   ];
 
 
